@@ -1,4 +1,4 @@
-const api_url = "http://localhost:10010";
+const api_url = "https://localhost:10011";
 
 export const startPlan = async () => {
     const url = `${api_url}/Plan`;
@@ -64,4 +64,54 @@ export const getUsers = async () => {
     if (!response.ok) throw new Error("Failed to get users");
 
     return await response.json();
+};
+
+//User Assign
+export const getAssignedUsers = async (planId,procedureId) => {   
+   
+    console.log("api")
+    const url = `${api_url}/AssignedUser/GetAssignedUsers?planId=${planId}&procedureId=${procedureId}`;
+    const response = await fetch(url, {
+        method: "GET",
+    });
+
+    if (!response.ok) throw new Error("Failed to get assigned Users");
+
+    return await response.json();
+};
+
+
+export const assignUser = async (planId, procedureId,userId) => {
+    const url = `${api_url}/AssignedUser/AssignUser`;
+    var command = { planId: planId, procedureId: procedureId ,userId: userId};
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(command),
+    });
+
+    if (!response.ok) throw new Error("Failed to assign user");
+
+    return true;
+};
+
+
+export const unAssignUser = async (planId, procedureId,userId) => {
+    const url = `${api_url}/AssignedUser/UnAssignUser`;
+    var command = { planId: planId, procedureId: procedureId ,userId: userId};
+    const response = await fetch(url, {
+        method: "DELETE",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(command),
+    });
+
+    if (!response.ok) throw new Error("Failed to unAssign user");
+
+    return true;
 };
